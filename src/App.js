@@ -28,9 +28,6 @@ function App() {
           ...data, id: uuidv4(), tagsIds: tags.map((tag) => tag?.id)
       }] : [notes]
       return (newNote);
-     // return [...prevNotes, {
-      //   ...data, id: uuidv4(), tagsIds: tags.map((tag) => tag.id)
-      // }]
     })
   }
 
@@ -47,7 +44,7 @@ console.log(text);
   return (
     <Container>
     <Routes>
-      <Route path='/' element={<Notes notes={notes} handleAddNote={addNote}/>}/>
+      <Route path='/' element={<Notes notes={notes} handleAddNote={addNote}/>} availableTags={tags}/>
       <Route path='/new' element={<NewNote
        onSubmit={onCreateNote} 
        onAddTag={addTag}

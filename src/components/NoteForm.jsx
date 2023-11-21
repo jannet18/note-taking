@@ -1,6 +1,6 @@
 import React, {useRef, useState}  from 'react';
 import { Col, Form, Stack, Row, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CreatableReactSelect from 'react-select/creatable';
 import { v4  as uuidv4} from 'uuid';
 
@@ -9,6 +9,7 @@ function NoteForm({onAddTag, availableTags, onSubmit}) {
     const titleRef = useRef(null);
     const markdownRef = useRef(null);
     const [selectedTags, setSelectedTags] = useState([]);
+    const navigate = useNavigate();
 
     function handleSubmit(e) {
         // console.log(e.target.value);
@@ -18,18 +19,10 @@ function NoteForm({onAddTag, availableTags, onSubmit}) {
             markdown: markdownRef.current.value,
             tags: [selectedTags],
 
-        }
-        )
-        
-       
-       
-
-        
-        // tag.current.value = '';
-    }
-   
- 
-  return (
+        })
+        navigate('..');
+}
+ return (
 
   <Form onSubmit={handleSubmit}>
     <Stack gap={4}>
@@ -73,7 +66,7 @@ function NoteForm({onAddTag, availableTags, onSubmit}) {
                 <Form.Label>Body</Form.Label>
                 <Form.Control required as='textarea' ref={markdownRef} rows={15}></Form.Control>
 
-            </Form.Group>
+        </Form.Group>
             <Stack direction='horizontal' gap={3} className='justify-content-end'>
                 <Button type='submit' variant='primary' >Save</Button>
                 <Link to='..'>
