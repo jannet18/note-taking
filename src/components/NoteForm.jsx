@@ -2,33 +2,33 @@ import React, {useRef, useState}  from 'react';
 import { Col, Form, Stack, Row, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CreatableReactSelect from 'react-select/creatable';
+import { v4  as uuidv4} from 'uuid';
 
 
-function NoteForm({onSubmit}) {
+function NoteForm({onAddTag, availableTags, onSubmit}) {
     const titleRef = useRef(null);
     const markdownRef = useRef(null);
     const [selectedTags, setSelectedTags] = useState([]);
-    // const tagRef = useRef([
-    //     {
-    //         id: '',
-    //         label: '',
-    //     }
-    // ]);
-    // const [title, setTitle] = useState('');
-    // const [content, setContent] = useState('');
-    // const [tag, setTag] = useState([]);
 
-    function handleSubmit (e) {
+    function handleSubmit(e) {
         // console.log(e.target.value);
         e.preventDefault();
-        const title = titleRef.current.value;
-        const markdown = markdownRef.current.value;
-        const tag = [];
-    }
-    // function handleSaveClick(){
-    //     handleAddNote();
-    // }
+        onSubmit({
+            title: titleRef.current.value,
+            markdown: markdownRef.current.value,
+            tags: [selectedTags],
 
+        }
+        )
+        
+       
+       
+
+        
+        // tag.current.value = '';
+    }
+   
+ 
   return (
 
   <Form onSubmit={handleSubmit}>
@@ -43,11 +43,20 @@ function NoteForm({onSubmit}) {
             <Col>
             <Form.Group controlId='title'>
                 <Form.Label >Tags</Form.Label>
-                <CreatableReactSelect value={selectedTags.map((tag) => {
+                <CreatableReactSelect 
+                onCreateOption={label => {
+                    const newTag = { id: uuidv4(), label}
+                    onAddTag(newTag)
+                    setSelectedTags((prev) =>  [...prev, newTag])
+                    // console.log(...prev);
+                }}
+                value={selectedTags?.map((tag) => {
                     return {
                         label: tag.label, value: tag.id
                     }
-    
+                })}
+                options={availableTags?.map((tag) => {
+                    return {label: tag.label, value: tag.id}
                 })}
                 // converting form the value creatble react expects to what we will store locally
                 // modify tags

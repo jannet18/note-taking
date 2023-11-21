@@ -5,7 +5,7 @@ function Notes({notes}) {
   return (
     <div>
         {
-            notes.map((note, id) => (
+           notes && notes?.map((note, id) => (
                 <Note key={id} id ={note.id} title={note.title} content={note.content} tag={note.tag}/>
             ))
         }
