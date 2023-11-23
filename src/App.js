@@ -11,7 +11,7 @@ import { v4  as uuidv4} from 'uuid';
 function App() {
   const [notes, setNotes] = useLocalStorage('notes', {
     key: '',
-    initialValue: ''
+    initialValue: '',
   });
   const [tags, setTags] = useLocalStorage('tags', []);
 
@@ -37,14 +37,11 @@ function App() {
       return newTag;
     })
   }
-  const addNote = ({text}) => {
-console.log(text);
-  }
 
   return (
     <Container>
     <Routes>
-      <Route path='/' element={<Notes notes={notes} handleAddNote={addNote}/>} availableTags={tags}/>
+      <Route path='/' element={<Notes notes={notes}/>} availableTags={tags}/>
       <Route path='/new' element={<NewNote
        onSubmit={onCreateNote} 
        onAddTag={addTag}
