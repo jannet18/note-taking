@@ -1,43 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { Badge, Card, Stack} from 'react-bootstrap'
-import '../index.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import { Badge, Card, Stack } from "react-bootstrap";
+import "../index.css";
 
-function Note({id, title, tags}) {
-
-//   const styles = {
-//     Card: {
-//       transition: 'translate ease-in-out 100ms, box-shadow ease-in-out 100ms';
-//     }
-
-//     Card:'hover',
-//     Card:'focus'
-//     {
-//       translate: '0 -5px',
-//       box-shadow: '0 5px 8px 0 rgba(0, 0, 0, .2)';
-// }
-  
+function Note({ id, title, tags }) {
   return (
-    <Card as={Link} to={`/${id}`} className={`h-100 text-reset text-decoration-none card`}>
+    <Card
+      as={Link}
+      to={`/${id}`}
+      className={`h-100 text-reset text-decoration-none card`}
+    >
       <Card.Body>
-        <Stack gap={2} className='align-items-center justify-content-center h-100'>
-          <span className='fs-5'>{title}</span>
+        <Stack
+          gap={2}
+          className="align-items-center justify-content-center h-100"
+        >
+          <span className="fs-5">{title}</span>
           {tags?.length > 0 && (
-            <Stack gap={1} direction='horizontal' className='justify-content-center flex-wrap'>
-              {tags?.map(tag => (
-                <Badge key={tag.id} className='text-truncate'>{tag.label}</Badge>
+            <Stack
+              gap={1}
+              direction="horizontal"
+              className="justify-content-center flex-wrap"
+            >
+              {tags?.map((tag) => (
+                <Badge key={tag.id} className="text-truncate">
+                  {tag.label}
+                </Badge>
               ))}
             </Stack>
           )}
         </Stack>
       </Card.Body>
     </Card>
-    // <div>
-    //     <h3>{title}</h3>
-    //     <span>{tag}</span>
-    //     <p>{content}</p>
-    // </div>
-  )
+  );
 }
 
-export default Note
+export default Note;
