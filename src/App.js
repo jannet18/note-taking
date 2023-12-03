@@ -6,7 +6,10 @@ import NewNote from "./components/NewNote";
 import Notes from "./components/Notes";
 import useLocalStorage from "./components/useLocalStorage";
 import { useMemo } from "react";
+import NoteLayout from "./components/NoteLayout";
 import { v4 as uuidv4 } from "uuid";
+import NoteCard from "./components/NoteCard";
+import EditNote from "./components/EditNote";
 
 function App() {
   const [notes, setNotes] = useLocalStorage("notes", {
@@ -18,13 +21,13 @@ function App() {
   const notesWithTags = useMemo(() => {
     return notes?.map((note) => {
       const tagsForNote = tags?.filter(
-        (tag) => note?.tagsIds && note?.tagsIds.includes(tag?.id)
+        (tag) => note?.tagIds && note?.tagIds.includes(tag?.id)
       );
       return { ...note, tags: tagsForNote };
     });
   }, [notes, tags]);
 
-  function onCreateNote({ tags, ...data }) {
+  function onCreateNote(tags, ...data) {
     setNotes((prevNotes) => {
       const newNote = Array.isArray(prevNotes)
         ? [
@@ -32,7 +35,7 @@ function App() {
             {
               ...data,
               id: uuidv4(),
-              tagsIds: tags.map((tag) => tag?.id),
+              tagIds: Array.isArray(tags) ? tags?.map((tag) => tag?.id) : [],
             },
           ]
         : [notes];
@@ -47,6 +50,40 @@ function App() {
     });
   }
 
+  function onUpdateNote(id, tags, ...data) {
+    setNotes((prevNotes) => {
+      return prevNotes.map((note) => {
+        if (note?.id === id) {
+          return {
+            ...note,
+            ...data,
+            id: uuidv4(),
+            tagIds: Array.isArray(tags) ? tags?.map((tag) => tag?.id) : [],
+            // tagIds: tags?.map((tag) => tag.id),
+          };
+        } else {
+          return note;
+        }
+      });
+    });
+    // setNotes((prevNotes) => {
+    //   const updateNote = Array.isArray(prevNotes)
+    //     ? [
+    //         ...prevNotes,
+    //         {
+    //           ...data,
+    //           id: uuidv4(),
+    //           tagsIds: tags.map((tag) => tag?.id),
+    //         },
+    //       ]
+    //     : [notes];
+    //   if (note.id === id) {
+    //     return updateNote;
+    //   } else {
+    //     return updateNote;
+    //   }
+    // });
+  }
   return (
     <Container>
       <Routes>
@@ -66,9 +103,18 @@ function App() {
             />
           }
         />
-        <Route path="/:id">
-          <Route index element={<h2>Show</h2>} />
-          <Route path="edit" element={<h2>Edit</h2>} />
+        <Route path="/:id" element={<NoteLayout notes={notesWithTags} />}>
+          <Route index element={<NoteCard />} />
+          <Route
+            path="edit"
+            element={
+              <EditNote
+                onSubmit={onUpdateNote}
+                onAddTag={addTag}
+                availableTags={tags}
+              />
+            }
+          />
         </Route>
         <Route path="/" element={<h2>hello</h2>} />
         <Route path="*" element={<Navigate to="/" />} />

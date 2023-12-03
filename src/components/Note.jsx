@@ -23,8 +23,8 @@ function Note({ id, title, tags }) {
               className="justify-content-center flex-wrap"
             >
               {tags?.map((tag) => (
-                <Badge key={tag.id} className="text-truncate">
-                  {tag.label}
+                <Badge key={tag?.id} className="text-truncate">
+                  {tag?.label}
                 </Badge>
               ))}
             </Stack>
